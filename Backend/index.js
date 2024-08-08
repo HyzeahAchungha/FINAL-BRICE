@@ -3,7 +3,15 @@ import cors from "cors";
 import { adminRouter } from "./Routes/AdminRoutes.js";
 import studentRouter from "./Routes/StudentRoute.js";
 import jwt from "jsonwebtoken";
-import cookieParser from 'cookie-Parser';
+import cookieParser from 'cookie-parser';
+
+
+
+
+
+
+
+
 const app = express();
 app.use(
   cors({
@@ -13,11 +21,14 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(cookieParser())
 app.use(express.json());
 app.use("/auth", adminRouter);
 app.use("/student", studentRouter);
 app.use(express.static("public"));
+
+
 
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
@@ -33,6 +44,9 @@ const verifyUser = (req, res, next) => {
     return res.json({ Status: false, Error: "Not authenticated" });
   }
 };
+
+
+
 
 app.get("/verify", verifyUser, (req, res) => {
 	return res.json({ Status: true, role:req.role,id:req.id });
